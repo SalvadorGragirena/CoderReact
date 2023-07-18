@@ -3,6 +3,8 @@ import ItemList from './ItemList';
 import { getProducts } from './data/FakeApi'
 import Loader from './Loader/Loader';
 import { useParams } from 'react-router-dom';
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../firebase/data";
 
 
 const ItemListContainer = ({ greeting, category }) => {
@@ -11,17 +13,21 @@ const ItemListContainer = ({ greeting, category }) => {
   const { cat } = useParams();
 
   useEffect(() => {
-    setLoading(true);
-    getProducts()
-      .then((res) => {
-        if (category === "NoCategoria") {
-          setListaProductos(res.filter((item) => item.top === true));
-        } else {
-          setListaProductos(res.filter((item) => item.category === category));
-        }
+   
+    const productosRef = collection(db, "productos");
+
+    const q = category ? query(productosRef, where("category", "==", category)) : query(productosRef, where("top", "==", true));
+
+    getDocs(q)
+     .then((resp) => {
+      
+
+      setListaProductos(
+      resp.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id}
       })
-      .catch((error) => console.log(error))
-      .finally(() => setLoading(false));
+     )
+    })
   }, [cat]);
 
 

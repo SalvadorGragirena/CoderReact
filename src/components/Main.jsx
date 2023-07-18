@@ -31,7 +31,7 @@ const Main = () => {
                 </Card>
             </Row>
             <Row>
-                <ItemListContainer greeting={"Listado de productos Top en Ventas"} category={"NoCategoria"}/>
+                <ItemListContainer greeting={"Listado de productos Top en Ventas"} category={""}/>
             </Row>
             <Row>
                 <ItemListContainer greeting={"Listado de productos de Muebles"}category={"muebles"}/>

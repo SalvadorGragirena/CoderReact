@@ -3,6 +3,8 @@ import { getProducts } from './data/FakeApi'
 import ItemDetail from './ItemDetail';
 import Loader from './Loader/Loader';
 import { useParams } from 'react-router-dom';
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase/data";
 
 const ItemDetailContainer = () => {
   const [detalleProducto, setDetalleProducto] = useState({});
@@ -11,8 +13,15 @@ const ItemDetailContainer = () => {
   
   useEffect(() => {
     setLoading(true);
-    getProducts()
-      .then((res) => setDetalleProducto(res.find((item) => item.id === id)))
+    const docRef = doc(db, "productos", id);
+    getDoc(docRef)
+      .then((resp) => {
+        setDetalleProducto(
+          { ...resp.data(), id: resp.id }
+          );
+
+      })
+    
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
   }, [id]);
