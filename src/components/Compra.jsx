@@ -8,7 +8,7 @@ import { db } from "../firebase/data";
 
 const Compra = () => {
 
-    const { pedidoId, setPedidoId } = useState("");
+    const [ pedidoId, setPedidoId ] = useState("");
     const { register, handleSubmit } = useForm();
     const { cartArray, clearCart, totalCarrito } = useContext(CartContext);  
 
@@ -33,6 +33,7 @@ const Compra = () => {
             <div className="container">
                 <h1 className="title">Muchas gracias por comprar</h1>
                 <p>Tu número de pedido es: {pedidoId}</p>
+                {clearCart()}
             </div>
         )
     }
